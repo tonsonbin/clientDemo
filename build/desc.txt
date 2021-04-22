@@ -1,0 +1,15 @@
+java 桌面应用程序快速开发框架基本实现架构1.0
+author tb
+date 2019-06-27
+
+基本的数据增删查改ui都是已经做了默认的实现。
+
+如果要添加新的列表表单：
+1、复制一份dao/userDao，把数据业务改成相对应的
+2、复制一份userFormPanel和userListPanel，在里面把相关的数据业务改成对应的
+3、在main/base/RightPanel的addCompont()方法里面添加你的listPanel
+4、在main/base/menuPanel里面“菜单配置”那里配置上你的菜单
+
+main/base/Main.java 为运行入口
+
+只需要关心业务数据，不需要去做ui的逻辑实现。
