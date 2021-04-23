@@ -32,7 +32,7 @@ public abstract class BaseFormPanel extends BasePanel{
 	private Logger logger = Logger.getLogger(BaseFormPanel.class);
 	private String objName = this.getClass().getName();
 	
-	private List<String> formComponentNames = new ArrayList<String>(); //查询文本控件名
+	public List<String> formComponentNames = new ArrayList<String>(); //查询文本控件名
 	/**
 	 * @param parent panel的父级窗口对象
 	 * @param width  panel的宽
@@ -70,13 +70,21 @@ public abstract class BaseFormPanel extends BasePanel{
 		jPanel.setVisible(true);
 		return jPanel;
 	};
-	
 	/**
 	 * 添加输入框
 	 * @param name 查询字段名
 	 * @param labelName label显示字符串
 	 */
 	protected void addTextFieldComponent(String name,String labelName) {
+		addTextFieldComponent(name,labelName,"");
+	}
+	/**
+	 * 添加输入框
+	 * @param name 查询字段名
+	 * @param labelName label显示字符串
+	 * @param replaceValue 替换内容
+	 */
+	protected void addTextFieldComponent(String name,String labelName,String replaceValue) {
 		
 		BasePanel formPanel = (BasePanel) getComponent("formPanel");
 		
@@ -94,10 +102,12 @@ public abstract class BaseFormPanel extends BasePanel{
 				
 				jPanel.add(bl1,BorderLayout.WEST);
 				
-				JTextField tField = new JTextField("",10);
-				tField.setText("");
+				CommonTextField commonTextField = new CommonTextField();
+				commonTextField.setReplaceValue(replaceValue);
+				JTextField tField = commonTextField.gettField();
+				
 				jPanel.add(tField,BorderLayout.EAST);
-				((BaseFormPanel)((BasePanel)parent).parent).setComponent(name+"TextField", tField);
+				((BaseFormPanel)((BasePanel)parent).parent).setComponent(name+"TextField", commonTextField);
 				formComponentNames.add(name);
 				jPanel.repaint();
 			}
@@ -109,7 +119,7 @@ public abstract class BaseFormPanel extends BasePanel{
 		
 	}
 	
-	private void tAddComponent() {
+	public void tAddComponent() {
 		
 		BasePanel formPanel = new BasePanel(this) {};
 		
@@ -182,9 +192,16 @@ public abstract class BaseFormPanel extends BasePanel{
 
 			for(String name : formComponentNames) {
 				
-				JTextField tf = (JTextField) getComponent(name+"TextField");
 				if (bean.containsKey(name)) {
 					Object value = bean.get(name);
+
+					CommonTextField commonTextField = (CommonTextField) getComponent(name+"TextField");
+					JTextField tf = commonTextField.gettField();
+					String replaceValue = commonTextField.getReplaceValue();
+					commonTextField.setRealValue(value.toString());
+					if (StringUtils.isNotBlank(replaceValue)) {
+						value = replaceValue;
+					}
 					tf.setText(value == null ?"":value.toString());
 				}
 			}
@@ -199,7 +216,7 @@ public abstract class BaseFormPanel extends BasePanel{
 		
 		return true;
 	}
-	private void tAddListener() {
+	public void tAddListener() {
 		
 		((JButton)getComponent("saveButton")).addActionListener(new ActionListener() {
 			
@@ -212,10 +229,15 @@ public abstract class BaseFormPanel extends BasePanel{
 				
 				for(String name : formComponentNames) {
 					
-					JTextField tf = (JTextField) getComponent(name+"TextField");
-					String value = tf.getText();
+					CommonTextField commonTextField = (CommonTextField) getComponent(name+"TextField");
+					String realValue = commonTextField.getRealValue();
+					String tValue = commonTextField.gettField().getText();
+					if (tValue.equals(commonTextField.getReplaceValue())) {
+						//没有做修改，将值设置为真实值
+						tValue = realValue;
+					}
 
-					parameters.put(name, value);
+					parameters.put(name, tValue);
 				}
 
 				logger.info(objName+" query parameters is : "+parameters);

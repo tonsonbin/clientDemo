@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.Map;
 
 import com.tb.pro.common.BaseFormPanel;
+import com.tb.pro.common.Constant;
 import com.tb.pro.dao.UserDao;
 
 /**
@@ -26,6 +27,7 @@ public class UserFormPanel extends BaseFormPanel{
 		//添加表单需要显示的字段
 		addTextFieldComponent("name", "姓名");
 		addTextFieldComponent("login_name", "登录名");
+		addTextFieldComponent(Constant.LOGIN_PWD_CLOUMNNAME, "登录密码","******");
 		
 	}
 
@@ -34,9 +36,10 @@ public class UserFormPanel extends BaseFormPanel{
 		
 		String name = (String) parameters.get("name");
 		String loginName = (String) parameters.get("login_name");
+		String loginPwd = (String) parameters.get(Constant.LOGIN_PWD_CLOUMNNAME);
 		String id = (String) parameters.get("id");
 		
-		return userDao.insertUsers(id, name, loginName);
+		return userDao.insertUsers(id, name, loginName,loginPwd);
 		
 	}
 
@@ -45,8 +48,9 @@ public class UserFormPanel extends BaseFormPanel{
 		// TODO Auto-generated method stub
 		String name = (String) parameters.get("name");
 		String loginName = (String) parameters.get("login_name");
+		String loginPwd = (String) parameters.get(Constant.LOGIN_PWD_CLOUMNNAME);
 		String id = (String) parameters.get("id");
-		return userDao.updateUser(id, name, loginName);
+		return userDao.updateUser(id, name, loginName,loginPwd);
 	}
 	
 	@Override

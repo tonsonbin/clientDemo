@@ -11,6 +11,7 @@ import javax.swing.JTable;
 import com.tb.pro.common.BasePanel;
 import com.tb.pro.common.BaseQueryPanel;
 import com.tb.pro.common.BaseTablePanel;
+import com.tb.pro.common.UserUtils;
 import com.tb.pro.dao.UserDao;
 import com.tb.pro.utils.JTableUtils;
 
@@ -107,7 +108,11 @@ public class UserListPanel extends BasePanel{
 				return updateFormPanel;
 			}
 		};
-		
+
+		if (!"1".equals((String)UserUtils.getCurrentUser().get("id"))) {
+			//非超级管理员，不可添加用户信息
+			queryPanel.setShowAddButton(false);
+		}
 		jPanel.add(queryPanel.getPanel(),BorderLayout.NORTH);
 		jPanel.add(tablePanel.getPanel(),BorderLayout.CENTER);
 		

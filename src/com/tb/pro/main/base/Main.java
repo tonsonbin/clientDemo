@@ -7,9 +7,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
-import com.tb.pro.main.UserFormPanel;
+import com.tb.pro.main.sys.LoginFormPanel;
 
 /**
  * 运行入口
@@ -30,7 +29,7 @@ public class Main extends JFrame{
 	public TopPanel topPanel;
 	public LeftPanel leftPanel;
 	public RightPanel rightPanel;
-	public UserFormPanel userFormPanel;
+	public LoginFormPanel loginFormPanel;
 	
 	public Main(String title) {
 		
@@ -73,22 +72,21 @@ public class Main extends JFrame{
 	}
 	
 	public void addComponents() {
-		
-		mainSizeWidth = this.getWidth();
-		mainSizeHeight = this.getHeight();
-		
-		topPanel = new TopPanel(this);
-		leftPanel = new LeftPanel(this);
-		rightPanel= new RightPanel(this);
-		
-		this.add(topPanel.getPanel(),BorderLayout.NORTH);
-		this.add(leftPanel.getPanel(),BorderLayout.WEST);
-		
-		JPanel jPanel = new JPanel();
-		jPanel.setLayout(new BorderLayout());
-		jPanel.add(rightPanel.getPanel(),BorderLayout.CENTER);
-		
-		this.add(jPanel, BorderLayout.CENTER);
+
+		loginFormPanel = new LoginFormPanel(this);
+		//显示登录界面
+		loginFormPanel.dialog();
+		if (loginFormPanel.loginSuccess) {
+
+			topPanel = new TopPanel(this);
+			leftPanel = new LeftPanel(this);
+			rightPanel= new RightPanel(this);
+			
+			this.add(topPanel.getPanel(),BorderLayout.NORTH);
+			this.add(leftPanel.getPanel(),BorderLayout.WEST);
+			this.add(rightPanel.getPanel(), BorderLayout.CENTER);
+			
+		}
 	}
 	
 	public static void main(String[] args) {

@@ -155,18 +155,25 @@ public abstract class BaseQueryPanel extends BasePanel{
 				
 			}
 		});
-		((JButton)getComponent("addButton")).addActionListener(new ActionListener() {
+		
+		Object addButton = getComponent("addButton");
+		if (addButton != null) {
 			
-			@Override
-			public void actionPerformed(ActionEvent e) {
+			((JButton)addButton).addActionListener(new ActionListener() {
 				
-				BasePanel addFormPanel = (BasePanel) getComponent("addFormPanel");
-				
-				addFormPanel = addButtonClick(addFormPanel);
-				
-				setComponent("addFormPanel", addFormPanel);
-			}
-		});
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					
+					BasePanel addFormPanel = (BasePanel) getComponent("addFormPanel");
+					
+					addFormPanel = addButtonClick(addFormPanel);
+					
+					setComponent("addFormPanel", addFormPanel);
+				}
+			});
+			
+		}
+		
 		
 	}
 	/**
