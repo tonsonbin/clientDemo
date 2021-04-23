@@ -69,7 +69,9 @@ public abstract class BaseTablePanel extends BasePanel{
 		addListener();
 		
 		tAddComponent();
-		tTableListener();
+		if (UserUtils.isAdmin()) {
+			tTableListener();
+		}
 
 		return jPanel;
 	};

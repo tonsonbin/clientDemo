@@ -21,4 +21,20 @@ public class UserUtils {
 	public static void setCurrentUser(Map<String, Object> userS) {
 		user = userS;
 	}
+	
+	/**
+	 * 当前登录用户是否是管理员
+	 * @return
+	 */
+	public static boolean isAdmin() {
+		if (user == null) {
+			return false;
+		}
+		
+		if (!Constant.USER_ADMIN_ID.equals(user.get("id"))) {
+			return false;
+		}
+		
+		return true;
+	}
 }

@@ -109,7 +109,7 @@ public class UserListPanel extends BasePanel{
 			}
 		};
 
-		if (!"1".equals((String)UserUtils.getCurrentUser().get("id"))) {
+		if (!UserUtils.isAdmin()) {
 			//非超级管理员，不可添加用户信息
 			queryPanel.setShowAddButton(false);
 		}
